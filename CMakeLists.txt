@@ -11,4 +11,5 @@ set(CLIENT_SOURCES src/client/main.cpp src/client/client.cpp src/crc32.cpp)
 add_executable(server ${SERVER_SOURCES})
 add_executable(client ${CLIENT_SOURCES})
 
-add_custom_target(run COMMAND "./server")
+add_custom_target(run COMMAND "./server"
+                      COMMAND "./client clent server")

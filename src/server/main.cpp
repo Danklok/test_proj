@@ -9,12 +9,12 @@ int main(void) {
 
         server srv;
         while(true) {
-            size_t recv_size = srv.recv(client_addr);
-            if (recv_size < 0) {
+            size_t recv_size = srv.recv();
+            if (recv_size <= 0) {
                 continue;
             }
-            size_t msg_len = srv.construct_complete(recv_size, crc32);
-            srv.send(client_addr, msg_len);
+            size_t msg_size = srv.construct_complete(recv_size, crc32);
+            srv.send(msg_size);
         }
     }
     catch(const char* error) {

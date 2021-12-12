@@ -6,7 +6,7 @@
 #include "client.hpp"
 #include "../crc32.hpp"
 
-const size_t TIMEOUT_SECONDS = 1;
+const size_t TIMEOUT_SECONDS = 10000;
 const uint16_t PORT = 6543;
 const char     IP[] = "127.0.0.1";
 
@@ -101,8 +101,9 @@ size_t Client::send() {
     auto file = files[0];
     socklen_t slen = sizeof(m_server_addr);
     size_t msg_len, send_len;
-  
-    if (!file->m_seq_numbers.empty()) {
+    static size_t num = 3;
+    --num;
+    if (!file->m_seq_numbers.empty() && num == 0) {
         memcpy(proto->id, file->m_ID, ID_SIZE);
         proto->type = PUT;
         proto->seq_total = file->m_total_packs;
@@ -127,7 +128,6 @@ size_t Client::send() {
     } else {
         return -1;
     }
-
     return send_len;
 }
 

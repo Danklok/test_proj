@@ -8,9 +8,13 @@ int main(int argc, char *argv[]) {
 
         while(true) {
             if (client.send() <= 0) {
+                return 1;
                 continue;
             };
-            client.recv();
+            if (client.recv() <= 0) {
+                printf("Stop client\n");
+                return 0;
+            }
         }
     }
     catch(const char* error) {
